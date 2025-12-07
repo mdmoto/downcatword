@@ -1,185 +1,300 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>下载 CatWord - AI 场景单词学习</title>
+    <title>CatWord AI - 极客背单词</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+SC:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
-            --primary-color: #f97316; /* Orange-500 */
-            --bg-color: #fff7ed; /* Orange-50 */
-            --text-color: #374151; /* Gray-700 */
+            --primary: #f97316;
+            /* Orange Neon */
+            --primary-glow: rgba(249, 115, 22, 0.4);
+            --bg-dark: #0f172a;
+            /* Slate 900 */
+            --card-bg: rgba(30, 41, 59, 0.7);
+            /* Slate 800 with opacity */
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(249, 115, 22, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.15) 0%, transparent 20%);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            padding: 40px 20px;
-            text-align: center;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-        }
-        @media (min-width: 640px) {
-            .container {
-                min-height: auto;
-                margin-top: 40px;
-                border-radius: 20px;
-                padding: 60px 40px;
-            }
-            body {
-                background-color: #f3f4f6;
-            }
-        }
-        .logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 22px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
-        }
-        h1 {
-            font-size: 28px;
-            margin: 0 0 10px 0;
-            color: #111827;
-        }
-        .subtitle {
-            font-size: 16px;
-            color: #6b7280;
-            margin-bottom: 30px;
-        }
-        .download-btn {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 16px 32px;
-            border-radius: 50px;
-            text-decoration: none;
-            box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.4);
-            transition: transform 0.1s, box-shadow 0.1s;
+            overflow-x: hidden;
+        }
+
+        .background-anim {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 300px;
-            margin-bottom: 40px;
-            box-sizing: border-box;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f172a, #1e293b);
         }
-        .download-btn:active {
-            transform: scale(0.98);
+
+        .container {
+            position: relative;
+            max-width: 480px;
+            width: 90%;
+            padding: 40px 30px;
+            text-align: center;
+
+            /* Glassmorphism */
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out;
         }
-        .download-btn span {
-            margin-left: 8px;
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .features {
-            text-align: left;
-            margin-top: 40px;
-            background: #fffafa;
-            border-radius: 16px;
-            padding: 24px;
+
+        .logo-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 24px;
         }
-        .feature-item {
-            margin-bottom: 24px;
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 28px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            /* Tech Glow */
+            box-shadow: 0 0 30px var(--primary-glow);
         }
-        .feature-item:last-child {
-            margin-bottom: 0;
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
         }
-        .feature-title {
-            font-weight: 700;
+
+        .badge {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 12px;
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            margin-top: 16px;
             font-size: 16px;
-            color: #111827;
-            margin-bottom: 4px;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .qr-card {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
+            justify-content: center;
         }
-        .feature-title::before {
-            content: '';
+
+        #qrcode img {
             display: block;
-            width: 6px;
-            height: 6px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            margin-right: 8px;
+            /* Fix spacing */
         }
-        .feature-desc {
-            font-size: 14px;
-            color: #6b7280;
-            padding-left: 14px;
-        }
-        .qr-section {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-        }
-        .footer-link {
-            color: var(--primary-color);
+
+        .download-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
             text-decoration: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px var(--primary-glow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px var(--primary-glow);
+            filter: brightness(1.1);
+        }
+
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+            transition: 0.5s;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            color: var(--text-main);
             font-size: 14px;
-            margin-top: 20px;
-            display: inline-block;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .feature-text {
+            color: var(--text-sub);
+            font-size: 12px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <img src="https://catwords.edu.kg/static/logo.png" alt="CatWord Logo" class="logo">
-    
-    <h1>CatWord - AI 场景单词</h1>
-    <div class="subtitle">拍一拍，场景化记单词</div>
-    
-    <!-- 
-      TODO: USER MUST REPLACE THE HREF BELOW with their actual Cloudflare R2 Public URL.
-      Example: https://pub-xxxxxxxx.r2.dev/catword.apk
-      or https://download.yourdomain.com/catword.apk
-    -->
-    <a href="https://pub-05b401f62668486b8089c98757b469ad.r2.dev/catword.apk" class="download-btn" id="downloadLink">
-        📱 下载 Android APK
-    </a>
+    <div class="background-anim"></div>
 
-    <div class="features">
-        <div class="feature-item">
-            <div class="feature-title">AI 智能识别</div>
-            <div class="feature-desc">拍照识别场景物体，Google Gemini 深度分析</div>
+    <div class="container">
+        <div class="logo-wrapper">
+            <!-- 
+            TIP: 请确保将 logo.png 上传到与此 index.html 相同的目录 
+        -->
+            <img src="./logo.png" alt="Logo" class="logo"
+                onerror="this.src='https://via.placeholder.com/100/f97316/ffffff?text=CAT'">
         </div>
-        <div class="feature-item">
-            <div class="feature-title">真人级发音</div>
-            <div class="feature-desc">云端高品质 TTS，还原地道美式口语</div>
+
+        <h1>CatWord</h1>
+        <span class="badge">AI Powered Learning</span>
+
+        <div class="subtitle">
+            基于 Google Gemini 视觉大模型的<br>下一代场景单词记忆工具
         </div>
-        <div class="feature-item">
-            <div class="feature-title">自动 Matting</div>
-            <div class="feature-desc">智能抠图，一键生成精美单词卡片</div>
+
+        <!-- QR Code Container -->
+        <div class="qr-card">
+            <div id="qrcode"></div>
         </div>
-        <div class="feature-item">
-            <div class="feature-title">多语言支持</div>
-            <div class="feature-desc">支持 中 / 日 / 英 界面与翻译</div>
+
+        <a href="https://pub-05b401f62668486b8089c98757b469ad.r2.dev/catword.apk" class="download-btn">
+            <span style="font-size: 24px; margin-right: 12px;">🤖</span>
+            立即下载 APK
+        </a>
+
+        <div class="features-grid">
+            <div class="feature-box">
+                <div class="feature-icon">👁️</div>
+                <div class="feature-title">AI 视觉识别</div>
+                <div class="feature-text">拍什么识什么，场景化记忆更牢固</div>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">🔊</div>
+                <div class="feature-title">云端发音</div>
+                <div class="feature-text">地道美式口语，告别哑巴英语</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2025 CatWord AI Tech. Version 0.9.0 Beta
         </div>
     </div>
 
-    <!-- <a href="https://catwords.edu.kg" class="footer-link">访问网页版</a> -->
-</div>
+    <script>
+        // Config
+        const APK_URL = "https://pub-05b401f62668486b8089c98757b469ad.r2.dev/catword.apk";
 
-<script>
-    // Optional: Auto-detect OS or handle logic
-    // Currently points rigidly to APK
-    
-    // Attempt to auto-fix URL if user forgets (User provided dashboard link format hint)
-    // The bucket is 'catword', object is 'catword.apk'
-    // Usually R2 public URL is https://<bucket>.<account-hash>.r2.dev/<object>
-    // But without the account hash subdomain enabled, we can't guess.
-    // I put a placeholder in the href above.
-</script>
+        // Generate QR Code
+        new QRCode(document.getElementById("qrcode"), {
+            text: APK_URL,
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    </script>
 
 </body>
+
 </html>
